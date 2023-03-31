@@ -1,0 +1,268 @@
+// Developed by Shahab Movahhedi (shmovahhedi.com)
+
+$Toast-Color-Default: #007fff;
+$Toast-Color-Success: #47b35f;
+$Toast-Color-Error: #fb3449;
+$Toast-Color-Info: #007fff;
+$Toast-Color-Text-White: #f9f7f7;
+$Toast-Color-Text-OnAccent: #f9f7f7;
+$Toast-Color-Text-Secondary: #898989;
+$Toast-Hover-Slight-Lighten: inset 0 0 999px 999px rgba(255, 255, 255, 0.2);
+
+$Responsive-Tablet-Max: 770px;
+$Responsive-Mobile-Max: 700px;
+$Responsive-MobileSmall-Max: 500px;
+
+@mixin mobile() {
+	@media only screen and (max-width: $Responsive-Mobile-Max) {
+		@content;
+	}
+}
+
+@mixin mobile_small() {
+	@media only screen and (max-width: $Responsive-MobileSmall-Max) {
+		@content;
+	}
+}
+
+:global {
+	#ToastBox {
+		position: fixed;
+		bottom: 9px;
+		inset-inline-end: 9px;
+		width: min(300px, 96vw);
+		text-align: center;
+		font-size: 1rem;
+		z-index: 200;
+
+		@include mobile_small {
+			inset-inline: 2%;
+			width: 96%;
+		}
+	}
+}
+
+.Toast {
+	position: relative;
+	display: block;
+	min-width: 300px;
+	margin-bottom: 9px;
+	transform-style: preserve-3d;
+	text-align: center;
+	font-size: 1rem;
+	font-family: inherit;
+	border-radius: 16px;
+	/* animation: Toast-FadeIn 0.5s, Toast-FadeOut 0.5s 4.5s forwards; */
+	animation: Toast-FadeIn 0.2s ease 1 forwards;
+	transition: 500ms;
+	z-index: 200;
+
+	&.Success {
+		background-color: $Toast-Color-Success;
+	}
+	&.Error {
+		background-color: $Toast-Color-Error;
+	}
+	&.Info,
+	&.Neutral {
+		background-color: $Toast-Color-Info;
+	}
+	&.Bye {
+		animation: Toast-FadeOut 0.2s ease 0.1s 1 forwards;
+	}
+
+	@include mobile {
+		width: 96%;
+		margin: 2%;
+	}
+}
+
+.Toast-Content {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 16px 24px;
+	color: $Toast-Color-Text-White;
+	background-color: $Toast-Color-Default;
+	border-radius: 16px;
+	overflow: hidden;
+
+	.Toast.Success & {
+		background-color: $Toast-Color-Success;
+	}
+	.Toast.Error & {
+		background-color: $Toast-Color-Error;
+	}
+	.Toast.Info &,
+	.Toast.Neutral & {
+		background-color: $Toast-Color-Info;
+	}
+}
+
+.Toast-Title {
+	width: 100%;
+	margin-bottom: 12px;
+	text-align: center;
+	font-size: 1.3rem;
+	font-weight: 700;
+}
+
+.Toast-Text {
+	width: 100%;
+	text-align: center;
+	font-size: 1rem;
+}
+
+.Toast-ButtonBox {
+	position: relative;
+	display: flex;
+	width: 100%;
+	justify-content: flex-end;
+	align-content: flex-end;
+	margin-top: 16px;
+	box-sizing: border-box;
+}
+
+.Toast-Button {
+	position: relative;
+	display: block;
+	width: fit-content;
+	min-width: 45px;
+	max-width: 100%;
+	margin-inline-start: 12px;
+	padding: 8px 16px;
+	text-align: center;
+	font-size: 1rem;
+	font-weight: 700;
+	font-family: inherit;
+	text-decoration: none;
+	color: $Toast-Color-Text-OnAccent;
+	background-color: transparent;
+	border: 1px solid $Toast-Color-Text-OnAccent;
+	border-radius: 50px;
+	outline: 0;
+	transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
+	box-sizing: border-box;
+	cursor: pointer;
+	-webkit-appearance: none;
+	appearance: none;
+
+	&.Filled {
+		color: $Toast-Color-Default;
+		background-color: $Toast-Color-Text-OnAccent;
+		border-color: $Toast-Color-Default;
+	}
+	&.Outlined {
+		color: $Toast-Color-Text-OnAccent;
+		background-color: transparent;
+		border: 1px solid $Toast-Color-Text-OnAccent;
+	}
+	&.Low {
+		color: $Toast-Color-Text-OnAccent;
+		background-color: transparent;
+		border: none;
+	}
+	&:hover {
+		box-shadow: $Toast-Hover-Slight-Lighten;
+	}
+	&:disabled,
+	&.Disabled {
+		opacity: 0.75;
+		background-color: $Toast-Color-Text-Secondary;
+		border-color: $Toast-Color-Text-Secondary;
+		cursor: default;
+	}
+	&:focus {
+		color: $Toast-Color-Default;
+		background-color: $Toast-Color-Text-White;
+	}
+}
+
+.Toast-ActionBox {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-end: 0;
+	padding: 4px 8px 10px;
+	visibility: hidden;
+	transform: translateZ(-1px);
+	font-size: 0;
+	background-color: $Toast-Color-Default;
+	border-radius: 16px 16px 0 0;
+	animation: none;
+	transition: 500ms;
+	z-index: -1;
+
+	.Toast.Success & {
+		background-color: $Toast-Color-Success;
+	}
+	.Toast.Error & {
+		background-color: $Toast-Color-Error;
+	}
+	.Toast.Info &,
+	.Toast.Neutral & {
+		background-color: $Toast-Color-Info;
+	}
+}
+
+.Toast-ActionBox:hover,
+.Toast:hover .Toast-ActionBox {
+	visibility: visible;
+	transform: translateZ(-1px) translateY(-60%);
+
+	@include mobile {
+		transform: translateZ(-1px) translateY(-70%);
+	}
+}
+
+.Toast-Action {
+	width: 18px;
+	height: 18px;
+	aspect-ratio: 1 / 1;
+	margin: 2px 6px 8px;
+	background: transparent;
+	color: #fff;
+}
+
+.Toast-ProgressBar {
+	position: absolute;
+	inset-block-end: 0;
+	inset-inline-start: 0;
+	width: 100%;
+	height: 3px;
+	background-color: transparent;
+}
+
+.Toast-ProgressBar-Value {
+	position: absolute;
+	left: 0;
+	width: 0;
+	height: 3px;
+	background-color: #fff;
+}
+
+@keyframes Toast-FadeIn {
+	from {
+		bottom: -32px;
+		opacity: 0;
+	}
+	to {
+		bottom: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes Toast-FadeOut {
+	from {
+		opacity: 1;
+		// height: auto;
+		// bottom: 0;
+		// visibility: visible;
+	}
+	to {
+		opacity: 0;
+		transform: translateY(100%);
+		// height: 0;
+		// bottom: -32px;
+		// visibility: hidden;
+	}
+}

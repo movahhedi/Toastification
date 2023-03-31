@@ -1,0 +1,79 @@
+{
+	"name": "toastification",
+	"version": "0.0.1",
+	"description": "Toast Notifications for TypeScript & Lestin",
+	"author": "Shahab Movahhedi <dev@shmovahhedi.com>",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/movahhedi/Toastification"
+	},
+	"bugs": {
+		"url": "https://github.com/movahhedi/Toastification/issues"
+	},
+	"homepage": "https://github.com/movahhedi/Toastification#readme",
+	"keywords": [
+		"toast",
+		"typescript",
+		"js",
+		"toast-notification",
+		"lestin",
+		"movahhedi"
+	],
+	"type": "module",
+	"source": "./Toast.tsx",
+	"exports": {
+		".": {
+			"types": "./dist/Toast.d.ts",
+			"require": "./dist/Toast.js",
+			"default": "./dist/Toast.modern.mjs",
+			"import": "./Toast.module.js"
+		},
+		"./Toast": {
+			"types": "./Toast.tsx",
+			"default": "./Toast.tsx",
+			"import": "./Toast.tsx"
+		},
+		"./Toast.module.scss": {
+			"types": "./Toast.module.scss",
+			"default": "./Toast.module.scss",
+			"import": "./Toast.module.scss"
+		},
+		"./dist/Toast.module.css": {
+			"types": "./dist/Toast.module.css",
+			"default": "./dist/Toast.module.css",
+			"import": "./dist/Toast.module.css"
+		},
+		"./Toast.module.css": {
+			"types": "./dist/Toast.module.css",
+			"default": "./dist/Toast.module.css",
+			"import": "./dist/Toast.module.css"
+		},
+		"./dist/Toast.css": {
+			"types": "./dist/Toast.css",
+			"default": "./dist/Toast.css",
+			"import": "./dist/Toast.css"
+		},
+		"./Toast.css": {
+			"types": "./dist/Toast.css",
+			"default": "./dist/Toast.css",
+			"import": "./dist/Toast.css"
+		}
+	},
+	"main": "./dist/Toast.cjs",
+	"module": "./dist/Toast.mjs",
+	"umd:main": "./dist/Toast.umd.js",
+	"unpkg": "./dist/Toast.umd.js",
+	"types": "./dist/Toast.d.ts",
+	"scripts": {
+		"build": "sass Toast.module.scss:dist/Toast.module.css && microbundle --css-modules \"_[hash:base64:8]\"",
+		"dev": "microbundle watch"
+	},
+	"devDependencies": {
+		"lestin": "^0.0.10",
+		"microbundle": "^0.15.1",
+		"sass": "^1.60.0",
+		"typescript": "^5.0.3",
+		"typescript-plugin-css-modules": "^5.0.0"
+	}
+}
