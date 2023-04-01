@@ -1,6 +1,3 @@
-/// <reference types="./styles.d.ts" />
-
-import ToastStyles from "./dist/Toast.module.css";
 import type Lestin from "lestin/jsx-runtime";
 
 export enum ToastType {
@@ -11,17 +8,17 @@ export enum ToastType {
 
 export const ToastTypeData = {
 	Successful: {
-		Classname: ToastStyles.Success,
+		Classname: "Success",
 		Text: "Operation successful",
 		Color: "#47B35F",
 	},
 	Error: {
-		Classname: ToastStyles.Error,
+		Classname: "Error",
 		Text: "An error occurred",
 		Color: "#47B35F",
 	},
 	Info: {
-		Classname: ToastStyles.Info,
+		Classname: "Info",
 		Text: "Processing...",
 		Color: "#47B35F",
 	},
@@ -89,7 +86,7 @@ export class Toast {
 		if (myToastText) {
 			this._ToastTextElement = (
 				<p
-					class={ToastStyles["Toast-Text"]}
+					class="Toast-Text"
 					style={{
 						...(Options.TextAlign ? { textAlign: Options.TextAlign } : {}),
 						...(Options.TextSize ? { fontSize: Options.TextSize } : {}),
@@ -100,32 +97,32 @@ export class Toast {
 				</p>
 			);
 		}
-		this._ToastProgressBar_Value_Element = <div class={ToastStyles["Toast-ProgressBar-Value"]}></div>;
+		this._ToastProgressBar_Value_Element = <div class="Toast-ProgressBar-Value"></div>;
 
 		if (IsUserPinable)
 			this._ToastAction_Pin_Element = (
-				<button class={[ToastStyles["Toast-Action"], "Pin"].join(" ")} onClick={() => this.Pin()}>
+				<button class="Toast-Action Pin" onClick={() => this.Pin()}>
 					<i class="fas fa-thumbtack"></i>
 				</button>
 			);
 
 		this.ToastElement = (
-			<div class={[ToastStyles.Toast, myToastTypeSpecs.Classname].join(" ")}>
+			<div class={"Toast " + myToastTypeSpecs.Classname}>
 				{HasActionBox && (
-					<div class={ToastStyles["Toast-ActionBox"]}>
+					<div class="Toast-ActionBox">
 						{IsUserPinable && this._ToastAction_Pin_Element}
 						{IsUserDismissable && (
-							<button class={[ToastStyles["Toast-Action"], "Dismiss"].join(" ")} onClick={() => this.Dismiss()}>
+							<button class={"Toast-Action Dismiss"} onClick={() => this.Dismiss()}>
 								<i class="fas fa-times"></i>
 							</button>
 						)}
 					</div>
 				)}
 
-				<div class={ToastStyles["Toast-Content"]}>
+				<div class="Toast-Content">
 					{Options.Title && (
 						<h5
-							class={ToastStyles["Toast-Title"]}
+							class="Toast-Title"
 							style={{
 								...(Options.TitleAlign ? { textAlign: Options.TitleAlign } : {}),
 								...(Options.TitleSize ? { fontSize: Options.TitleSize } : {}),
@@ -137,16 +134,16 @@ export class Toast {
 					)}
 					{this._ToastTextElement}
 					{Options.Buttons && (
-						<div class={ToastStyles["Toast-ButtonBox"]}>
+						<div class="Toast-ButtonBox">
 							{Options.Buttons?.map((i) => (
-								<button class={[ToastStyles["Toast-Button"], i.Style].join(" ")} onClick={i.OnClick}>
+								<button class={"Toast-Button " + i.Style} onClick={i.OnClick}>
 									{i.Text}
 								</button>
 							))}
 						</div>
 					)}
 
-					<div class={ToastStyles["Toast-ProgressBar"]}>{this._ToastProgressBar_Value_Element}</div>
+					<div class="Toast-ProgressBar">{this._ToastProgressBar_Value_Element}</div>
 				</div>
 			</div>
 		);

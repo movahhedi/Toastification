@@ -13,15 +13,6 @@
 		"jsxFragmentFactory": "",
 		"paths": {
 			"lestin/jsx-runtime": ["./node_modules/lestin/jsx-runtime"],
-		},
-		"plugins": [
-			{
-				"name": "typescript-plugin-css-modules",
-				"options": {
-					"classnameTransform": "asIs"
-					// "customMatcher": "\\.(c|le|sa|sc)ss$",
-				}
-			}
-		]
+		}
 	}
 }
