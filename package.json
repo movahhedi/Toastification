@@ -67,7 +67,7 @@
 	"types": "./dist/Toast.d.ts",
 	"scripts": {
 		"build": "sass Toast.module.scss:dist/Toast.module.css && microbundle --css-modules \"_[hash:base64:8]\"",
-		"dev": "microbundle watch"
+		"dev": "sass Toast.module.scss:dist/Toast.module.css -w && microbundle watch"
 	},
 	"devDependencies": {
 		"lestin": "^0.0.10",
