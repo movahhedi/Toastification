@@ -25,20 +25,18 @@ $Responsive-MobileSmall-Max: 500px;
 	}
 }
 
-:global {
-	#ToastBox {
-		position: fixed;
-		bottom: 9px;
-		inset-inline-end: 9px;
-		width: min(300px, 96vw);
-		text-align: center;
-		font-size: 1rem;
-		z-index: 200;
+:global #ToastBox {
+	position: fixed;
+	bottom: 9px;
+	inset-inline-end: 9px;
+	width: min(300px, 96vw);
+	text-align: center;
+	font-size: 1rem;
+	z-index: 200;
 
-		@include mobile_small {
-			inset-inline: 2%;
-			width: 96%;
-		}
+	@include mobile_small {
+		inset-inline: 2%;
+		width: 96%;
 	}
 }
 
