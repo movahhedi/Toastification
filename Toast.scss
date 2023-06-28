@@ -34,13 +34,6 @@ $Responsive-MobileSmall-Max: 500px;
 	font-size: 1rem;
 	z-index: 200;
 
-	* {
-		margin: 0;
-		padding: 0;
-		line-height: 1;
-		color: $Toast-Color-Text-White;
-	}
-
 	@include mobile_small {
 		inset-inline: 2%;
 		width: 96%;
@@ -74,6 +67,13 @@ $Responsive-MobileSmall-Max: 500px;
 	}
 	&.Bye {
 		animation: Toast-FadeOut 0.2s ease 0.1s 1 forwards;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		line-height: normal;
+		color: $Toast-Color-Text-White;
 	}
 
 	@include mobile {
