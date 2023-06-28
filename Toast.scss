@@ -34,6 +34,13 @@ $Responsive-MobileSmall-Max: 500px;
 	font-size: 1rem;
 	z-index: 200;
 
+	* {
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		color: $Toast-Color-Text-White;
+	}
+
 	@include mobile_small {
 		inset-inline: 2%;
 		width: 96%;
@@ -103,12 +110,14 @@ $Responsive-MobileSmall-Max: 500px;
 	text-align: center;
 	font-size: 1.3rem;
 	font-weight: 700;
+	color: $Toast-Color-Text-White;
 }
 
 .Toast-Text {
 	width: 100%;
 	text-align: center;
 	font-size: 1rem;
+	color: $Toast-Color-Text-White;
 }
 
 .Toast-ButtonBox {
