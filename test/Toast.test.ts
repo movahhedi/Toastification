@@ -1,4 +1,4 @@
-import { ShowToast, ToastType, Toast_Props } from "../Toast";
+import { ShowToast, ToastType, type IToast_Props } from "../src/Toast";
 // import { Toast_Props } from "../Toast";
 // import { ShowToast, ToastType } from "../dist/Toast";
 
@@ -20,7 +20,7 @@ describe("ShowToast", () => {
 		const toastBox = document.getElementById("ToastBox");
 		expect(toastBox).not.toBeNull();
 		expect(toastBox!.children.length).toBe(1);
-		expect(toastBox!.children[0]).toBe(toast.ToastElement);
+		expect(toastBox!.children[0]).toBe(toast.toastElement);
 	});
 
 	it("should create a new ToastBox if one does not exist", () => {
@@ -29,43 +29,43 @@ describe("ShowToast", () => {
 		expect(toastBox).not.toBeNull();
 		expect(toastBox!.parentElement).toBe(container);
 		expect(toastBox!.children.length).toBe(1);
-		expect(toastBox!.children[0]).toBe(toast.ToastElement);
+		expect(toastBox!.children[0]).toBe(toast.toastElement);
 	});
 
 	it("should use the provided options to customize the appearance and behavior of the toast", () => {
-		const options: Toast_Props = {
-			Duration: 10000,
-			BackColor: "red",
-			Title: "Test Title",
-			IsPinned: true,
-			NoPin: true,
-			NoDismiss: true,
-			TextAlign: "center",
-			TextSize: "20px",
-			TextWeight: "bold",
-			TitleAlign: "start",
-			TitleSize: "30px",
-			TitleWeight: "bold",
-			Buttons: [
+		const options: IToast_Props = {
+			duration: 10000,
+			backColor: "red",
+			title: "Test Title",
+			isPinned: true,
+			noPin: true,
+			noDismiss: true,
+			textAlign: "center",
+			textSize: "20px",
+			textWeight: "bold",
+			titleAlign: "start",
+			titleSize: "30px",
+			titleWeight: "bold",
+			buttons: [
 				{
-					Text: "Button 1",
-					Style: "btn-primary",
-					OnClick: () => {},
+					text: "Button 1",
+					style: "btn-primary",
+					onClick: () => {},
 				},
 				{
-					Text: "Button 2",
-					Style: "btn-secondary",
-					OnClick: () => {},
+					text: "Button 2",
+					style: "btn-secondary",
+					onClick: () => {},
 				},
 			],
 		};
 		const toast = ShowToast(ToastType.Info, "Test Toast", options, container);
 
 		// Check that the provided options were used to customize the appearance and behavior of the toast
-		expect(toast.IsPinned).toBe(true);
+		expect(toast.isPinned).toBe(true);
 
 		// Check that the provided options were used to customize the appearance of the toast element
-		const titleElement = toast.ToastElement.querySelector(".Toast-Title") as HTMLElement;
+		const titleElement = toast.toastElement.querySelector(".Toast-Title") as HTMLElement;
 		expect(titleElement).not.toBeNull();
 		expect(titleElement.textContent).toBe("Test Title");
 		// TODO
@@ -73,7 +73,7 @@ describe("ShowToast", () => {
 		// expect(titleElement.style.fontSize).toBe("30px");
 		// expect(titleElement.style.fontWeight).toBe("bold");
 
-		const textElement = toast.ToastElement.querySelector(".Toast-Text") as HTMLElement;
+		const textElement = toast.toastElement.querySelector(".Toast-Text") as HTMLElement;
 		expect(textElement).not.toBeNull();
 		expect(textElement.textContent).toBe("Test Toast");
 		// TODO
@@ -81,7 +81,7 @@ describe("ShowToast", () => {
 		// expect(textElement.style.fontSize).toBe("20px");
 		// expect(textElement.style.fontWeight).toBe("bold");
 
-		const buttonElements = toast.ToastElement.querySelectorAll(".Toast-Button") as NodeListOf<HTMLButtonElement>;
+		const buttonElements = toast.toastElement.querySelectorAll(".Toast-Button") as NodeListOf<HTMLButtonElement>;
 		expect(buttonElements.length).toBe(2);
 		expect(buttonElements[0].textContent).toBe("Button 1");
 		expect(buttonElements[0].classList.contains("btn-primary")).toBe(true);
@@ -89,10 +89,10 @@ describe("ShowToast", () => {
 		expect(buttonElements[1].classList.contains("btn-secondary")).toBe(true);
 
 		// Check that the pin and dismiss buttons are not present
-		const pinButton = toast.ToastElement.querySelector(".Toast-Action.Pin") as HTMLButtonElement;
+		const pinButton = toast.toastElement.querySelector(".Toast-Action.Pin") as HTMLButtonElement;
 		expect(pinButton).toBeNull();
 
-		const dismissButton = toast.ToastElement.querySelector(".Toast-Action.Dismiss") as HTMLButtonElement;
+		const dismissButton = toast.toastElement.querySelector(".Toast-Action.Dismiss") as HTMLButtonElement;
 		expect(dismissButton).toBeNull();
 	});
 });

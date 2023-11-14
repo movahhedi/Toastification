@@ -24,7 +24,7 @@
 	],
 	"packageManager": "yarn@4.0.1",
 	"type": "module",
-	"source": "./Toast.tsx",
+	"source": "./src/Toast.tsx",
 	"main": "./dist/Toast.cjs",
 	"module": "./dist/Toast.mjs",
 	"umd:main": "./dist/Toast.umd.js",
@@ -32,8 +32,8 @@
 	"types": "./dist/Toast.d.ts",
 	"exports": {
 		".": "./dist/Toast.modern.mjs",
-		"./Toast": "./Toast.tsx",
-		"./Toast.scss": "./Toast.scss",
+		"./Toast": "./src/Toast.tsx",
+		"./Toast.scss": "./src/Toast.scss",
 		"./dist/Toast.css": "./dist/Toast.css",
 		"./Toast.css": "./dist/Toast.css"
 	},
