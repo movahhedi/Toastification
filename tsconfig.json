@@ -4,15 +4,14 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"lib": ["ESNext", "DOM"],
+		"moduleResolution": "Bundler",
 		"removeComments": false,
 		"preserveConstEnums": true,
 		"sourceMap": true,
 		"jsx": "react-jsx",
 		"jsxImportSource": "lestin",
-		"jsxFactory": "",
-		"jsxFragmentFactory": "",
 		"paths": {
-			"lestin/jsx-runtime": ["./node_modules/lestin/jsx-runtime"],
+			"lestin": ["./node_modules/lestin/jsx-runtime"],
 		}
 	}
 }

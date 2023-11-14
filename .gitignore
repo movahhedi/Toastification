@@ -7,14 +7,43 @@ yarn-error.log*
 .pnpm-debug.log*
 .cache
 
+# Temps
+**/[Tt]emp
+**/[Tt]emps
+**/.DS_Store
+**/._.DS_Store
+vite.config.*.timestamp-*
+*.log
+yarn-error.log
+
 # Dependency directories
 node_modules
+node_modules*
+vendor
+.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
+.parcel-cache
 
 # Env files
-.env
-.env.*
+[Ss]ecret.*
+[Cc]onfig.php
+*.sql
+*.env
+*.env.*
 !.env.template
+*.local
 
 # Builds
 dist
 build
+
+# Variable Data
+data
+/src/data
+/api/data
+/server/api/data
