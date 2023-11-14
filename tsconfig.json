@@ -10,6 +10,8 @@
 		"sourceMap": true,
 		"jsx": "react-jsx",
 		"jsxImportSource": "lestin",
+		"jsxFactory": "",
+		"jsxFragmentFactory": "",
 		"paths": {
 			"lestin": ["./node_modules/lestin/jsx-runtime"],
 		}

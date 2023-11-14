@@ -1,6 +1,6 @@
 {
 	"name": "toastification",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Toast Notifications for TypeScript & Lestin",
 	"author": "Shahab Movahhedi <dev@shmovahhedi.com>",
 	"license": "MIT",
@@ -45,8 +45,8 @@
 		"**/Toast.*"
 	],
 	"scripts": {
-		"build": "sass Toast.scss:dist/Toast.css --style compressed && microbundle",
-		"dev": "sass Toast.scss:dist/Toast.css -w --style compressed && microbundle watch"
+		"build": "sass src/Toast.scss:dist/Toast.css --style compressed && microbundle",
+		"dev": "sass src/Toast.scss:dist/Toast.css -w --style compressed && microbundle watch"
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.2",
