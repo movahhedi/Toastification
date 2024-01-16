@@ -1,6 +1,6 @@
 {
 	"name": "toastification",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "Toast Notifications for TypeScript & Lestin",
 	"author": "Shahab Movahhedi <dev@shmovahhedi.com>",
 	"license": "MIT",
@@ -33,25 +33,32 @@
 	"exports": {
 		".": "./dist/Toast.modern.mjs",
 		"./Toast": "./src/Toast.tsx",
+		"./Toast.tsx": "./src/Toast.tsx",
 		"./Toast.scss": "./src/Toast.scss",
+		"./src/Toast": "./src/Toast.tsx",
+		"./src/Toast.tsx": "./src/Toast.tsx",
+		"./src/Toast.scss": "./src/Toast.scss",
 		"./dist/Toast.css": "./dist/Toast.css",
 		"./Toast.css": "./dist/Toast.css"
 	},
 	"files": [
 		"dist",
 		"dist/*.css",
-		"Toast.tsx",
-		"Toast.scss",
+		"src/Toast.tsx",
+		"src/Toast.scss",
 		"**/Toast.*"
 	],
 	"scripts": {
 		"build": "sass src/Toast.scss:dist/Toast.css --style compressed && microbundle",
-		"dev": "sass src/Toast.scss:dist/Toast.css -w --style compressed && microbundle watch"
+		"dev:styles": "sass src/Toast.scss:dist/Toast.css -w --style compressed",
+		"dev:scripts": "microbundle watch",
+		"dev": "concurrently -n \"styles,scripts\" -c \"bgBlue,bgGreen\" \"yarn dev:styles\" \"yarn dev:scripts\""
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.11",
 		"@typescript-eslint/eslint-plugin": "^6.16.0",
 		"@typescript-eslint/parser": "^6.16.0",
+		"concurrently": "^8.2.2",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-prettier": "^5.1.2",

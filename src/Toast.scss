@@ -52,7 +52,7 @@ $Responsive-MobileSmall-Max: 500px;
 	border-radius: 16px;
 	/* animation: Toast-FadeIn 0.5s, Toast-FadeOut 0.5s 4.5s forwards; */
 	animation: Toast-FadeIn 0.2s ease 1 forwards;
-	transition: 500ms;
+	transition: 500ms ease-in-out;
 	z-index: 200;
 
 	&.Success {
@@ -74,11 +74,27 @@ $Responsive-MobileSmall-Max: 500px;
 		padding: 0;
 		line-height: normal;
 		color: $Toast-Color-Text-White;
+
+		-webkit-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;
 	}
 
 	@include mobile {
 		width: 96%;
 		margin: 2%;
+	}
+}
+
+@keyframes animate {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 300% 0;
+	}
+	100% {
+		background-position: 0 0;
 	}
 }
 
@@ -88,11 +104,11 @@ $Responsive-MobileSmall-Max: 500px;
 	height: 100%;
 	padding: 16px 24px;
 	color: $Toast-Color-Text-White;
-	background-color: $Toast-Color-Default;
+	// background-color: $Toast-Color-Default;
 	border-radius: 16px;
 	overflow: hidden;
 
-	.Toast.Success & {
+	/* .Toast.Success & {
 		background-color: $Toast-Color-Success;
 	}
 	.Toast.Error & {
@@ -101,7 +117,7 @@ $Responsive-MobileSmall-Max: 500px;
 	.Toast.Info &,
 	.Toast.Neutral & {
 		background-color: $Toast-Color-Info;
-	}
+	} */
 }
 
 .Toast-Title {

@@ -172,47 +172,52 @@ export class Toast {
 	 * The current percentage of the progress bar.
 	 */
 	public currentPercent: number | null = null;
-	private _toastInterval: number | null | any = null;
-	private _toastTextElement: HTMLElement | null = null;
-	private _toastProgressBarValueElement: HTMLElement | null = null;
-	private _toastActionPinElement: HTMLElement | null = null;
-	private _toastInitialOptions = null;
+	#toastInterval: number | null | any = null;
+	#toastTextElement: HTMLElement | null = null;
+	#toastProgressBarValueElement: HTMLElement | null = null;
+	#toastActionPinElement: HTMLElement | null = null;
+	#toastInitialOptions = null;
 
-	private _isPinned: boolean = false;
+	#isPinned: boolean = false;
 	/**
 	 * Whether the toast is pinned or not.
 	 */
 	get isPinned(): boolean {
-		return this._isPinned;
+		return this.#isPinned;
 	}
 
 	/**
 	 * Creates a new Toast instance.
 	 *
-	 * @param {ToastType} [myToastType=ToastType.Info] - The type of toast to create.
-	 * @param {string} [myToastText=""] - The text to display in the toast.
+	 * @param {ToastType} [toastType=ToastType.Info] - The type of toast to create.
+	 * @param {string} [toastText=""] - The text to display in the toast.
 	 * @param {IToast_Props} [options={}] - An object containing options for customizing the appearance and behavior of the toast.
 	 */
-	constructor(myToastType: ToastType = ToastType.Info, myToastText: string = "", options: IToast_Props = {}) {
+	constructor(toastType: ToastType = ToastType.Info, toastText: string = "", options: IToast_Props = {}) {
+		this.toastElement = <div class="Toast"></div>;
+		return this.BuildToast(toastType, toastText, options);
+	}
+
+	public BuildToast(toastType: ToastType = ToastType.Info, toastText: string = "", options: IToast_Props = {}) {
 		options = { ...toast_DefaultProps, ...options };
 
-		let myToastTypeSpecs = ToastTypeData.Info;
-		if (myToastType == ToastType.Successful) myToastTypeSpecs = ToastTypeData.Successful;
-		else if (myToastType == ToastType.Error) myToastTypeSpecs = ToastTypeData.Error;
+		let toastTypeSpecs = ToastTypeData.Info;
+		if (toastType == ToastType.Successful) toastTypeSpecs = ToastTypeData.Successful;
+		else if (toastType == ToastType.Error) toastTypeSpecs = ToastTypeData.Error;
 
-		if (!myToastText) myToastText = myToastTypeSpecs.text;
+		if (!toastText) toastText = toastTypeSpecs.text;
 
-		this._isPinned = options.isPinned || options.duration === -1;
+		this.#isPinned = options.isPinned || options.duration === -1;
 
 		const hasActionBox = !(options.noPin && options.noDismiss);
-		const isUserPinable = !(options.noPin || this._isPinned);
+		const isUserPinable = !(options.noPin || this.#isPinned);
 		const isUserDismissable = !options.noDismiss;
 
-		this._toastInitialOptions = options;
+		this.#toastInitialOptions = options;
 
-		this._toastTextElement = <></>;
-		if (myToastText) {
-			this._toastTextElement = (
+		this.#toastTextElement = <></>;
+		if (toastText) {
+			this.#toastTextElement = (
 				<p
 					class="Toast-Text"
 					style={{
@@ -221,66 +226,82 @@ export class Toast {
 						...(options.textWeight ? { fontWeight: options.textWeight } : {}),
 					}}
 				>
-					{myToastText}
+					{toastText}
 				</p>
 			);
 		}
-		this._toastProgressBarValueElement = <div class="Toast-ProgressBar-Value"></div>;
+		this.#toastProgressBarValueElement = <div class="Toast-ProgressBar-Value"></div>;
 
 		if (isUserPinable)
-			this._toastActionPinElement = (
+			this.#toastActionPinElement = (
 				<button class="Toast-Action Pin" onClick={() => this.Pin()}>
 					<i class="fas fa-thumbtack"></i>
 				</button>
 			);
 
-		this.toastElement = (
-			<div class={"Toast " + myToastTypeSpecs.classname}>
-				{hasActionBox && (
-					<div class="Toast-ActionBox">
-						{isUserPinable && this._toastActionPinElement}
-						{isUserDismissable && (
-							<button class={"Toast-Action Dismiss"} onClick={() => this.Dismiss()}>
-								<i class="fas fa-times"></i>
+		this.toastElement.innerHTML = "";
+		// this.toastElement.className = "Toast " + toastTypeSpecs.classname;
+		this.SetToastType(toastType);
+
+		if (hasActionBox) {
+			this.toastElement.append(
+				<div class="Toast-ActionBox">
+					{isUserPinable && this.#toastActionPinElement}
+					{isUserDismissable && (
+						<button class={"Toast-Action Dismiss"} onClick={() => this.Dismiss()}>
+							<i class="fas fa-times"></i>
+						</button>
+					)}
+				</div>,
+			);
+		}
+
+		this.toastElement.append(
+			<div class="Toast-Content">
+				{options.title && (
+					<h5
+						class="Toast-Title"
+						style={{
+							...(options.titleAlign ? { textAlign: options.titleAlign } : {}),
+							...(options.titleSize ? { fontSize: options.titleSize } : {}),
+							...(options.titleWeight ? { fontWeight: options.titleWeight } : {}),
+						}}
+					>
+						{options.title}
+					</h5>
+				)}
+				{this.#toastTextElement}
+				{options.buttons && (
+					<div class="Toast-ButtonBox">
+						{options.buttons?.map((i) => (
+							<button class={"Toast-Button " + i.style} onClick={i.onClick}>
+								{i.text}
 							</button>
-						)}
+						))}
 					</div>
 				)}
 
-				<div class="Toast-Content">
-					{options.title && (
-						<h5
-							class="Toast-Title"
-							style={{
-								...(options.titleAlign ? { textAlign: options.titleAlign } : {}),
-								...(options.titleSize ? { fontSize: options.titleSize } : {}),
-								...(options.titleWeight ? { fontWeight: options.titleWeight } : {}),
-							}}
-						>
-							{options.title}
-						</h5>
-					)}
-					{this._toastTextElement}
-					{options.buttons && (
-						<div class="Toast-ButtonBox">
-							{options.buttons?.map((i) => (
-								<button class={"Toast-Button " + i.style} onClick={i.onClick}>
-									{i.text}
-								</button>
-							))}
-						</div>
-					)}
-
-					<div class="Toast-ProgressBar">{this._toastProgressBarValueElement}</div>
-				</div>
-			</div>
+				<div class="Toast-ProgressBar">{this.#toastProgressBarValueElement}</div>
+			</div>,
 		);
 
-		if (!this._isPinned) {
+		if (!this.#isPinned) {
 			this.SetInterval(options.duration);
 		}
 
 		return this;
+	}
+
+	BuildSuccessToast(toastText: string = "", options: IToast_Props = {}): Toast {
+		return this.BuildToast(ToastType.Successful, toastText, options);
+	}
+
+	BuildErrorToast(toastText: string = "", options: IToast_Props = {}): Toast {
+		return this.BuildToast(ToastType.Error, toastText, options);
+	}
+
+	BuildInfoToast(toastText: string = "", options: IToast_Props = {}): Toast {
+		return this.BuildToast(ToastType.Info, toastText, options);
 	}
 
 	/**
@@ -290,10 +311,10 @@ export class Toast {
 	 * @returns {Toast} - The Toast instance.
 	 */
 	Pin(percent: number = 0): Toast {
-		this._isPinned = true;
-		if (this._toastInterval) clearInterval(this._toastInterval);
-		if (this._toastActionPinElement) this._toastActionPinElement.remove();
-		this._toastProgressBarValueElement.style.width = percent + "%";
+		this.#isPinned = true;
+		if (this.#toastInterval) clearInterval(this.#toastInterval);
+		if (this.#toastActionPinElement) this.#toastActionPinElement.remove();
+		this.#toastProgressBarValueElement.style.width = percent + "%";
 		return this;
 	}
 
@@ -304,7 +325,7 @@ export class Toast {
 	 * @returns {Toast} - The Toast instance.
 	 */
 	SetText(text: string = ""): Toast {
-		this._toastTextElement.textContent = text;
+		this.#toastTextElement.textContent = text;
 		return this;
 	}
 
@@ -315,7 +336,7 @@ export class Toast {
 	 * @returns {number} - The ID of the timeout that was set.
 	 */
 	Dismiss(timeMs: number = 0): number | any {
-		if (this._toastInterval) clearInterval(this._toastInterval);
+		if (this.#toastInterval) clearInterval(this.#toastInterval);
 		return setTimeout(() => {
 			requestAnimationFrame(() => {
 				this.toastElement.style.height = this.toastElement.scrollHeight + "px";
@@ -342,37 +363,50 @@ export class Toast {
 	/**
 	 * Sets an interval for automatically dismissing the toast.
 	 *
-	 * @param {number} [durationMs=5000] - How long to wait before dismissing the toast (in milliseconds).
+	 * @param {number} [durationMs=toast_DefaultProps.duration] - How long to wait before dismissing the toast (in milliseconds).
 	 * @param {number} [initialPercent=0] - The initial percentage of the progress bar to fill.
 	 * @returns {Toast} - The Toast instance.
 	 */
-	SetInterval(durationMs: number = 5000, initialPercent: number = 0): Toast {
-		this._isPinned = false;
-		if (this._toastInterval) clearInterval(this._toastInterval);
+	SetInterval(durationMs: number = toast_DefaultProps.duration, initialPercent: number = 0): Toast {
+		this.#isPinned = false;
+		if (this.#toastInterval) clearInterval(this.#toastInterval);
 		// ToastProgressBar.style.display = "block";
 		this.currentPercent = initialPercent;
 
-		this._toastInterval = setInterval(
+		this.#toastInterval = setInterval(
 			() => {
 				if (this.currentPercent >= 100) {
-					clearInterval(this._toastInterval);
+					clearInterval(this.#toastInterval);
 					this.Dismiss();
 				} else {
 					this.currentPercent++;
-					this._toastProgressBarValueElement.style.width = this.currentPercent + "%";
+					this.#toastProgressBarValueElement.style.width = this.currentPercent + "%";
 				}
 			},
 			(durationMs - 200) / 100,
 		);
 
-		if (!this._toastInitialOptions.NoPauseOnHover) {
-			this.toastElement.addEventListener("mouseenter", () => clearInterval(this._toastInterval));
+		if (!this.#toastInitialOptions.NoPauseOnHover) {
+			this.toastElement.addEventListener("mouseenter", () => clearInterval(this.#toastInterval));
 			this.toastElement.addEventListener("mouseleave", () => {
-				if (!this._isPinned) {
+				if (!this.#isPinned) {
 					this.SetInterval(durationMs, this.currentPercent);
 				}
 			});
 		}
+		return this;
+	}
+
+	SetGoing = this.SetInterval;
+
+	SetToastType(toastType: ToastType): Toast {
+		let toastTypeSpecs = ToastTypeData.Info;
+		if (toastType == ToastType.Successful) toastTypeSpecs = ToastTypeData.Successful;
+		else if (toastType == ToastType.Error) toastTypeSpecs = ToastTypeData.Error;
+
+		this.toastElement.classList.remove("Info", "Success", "Error");
+		this.toastElement.classList.add(toastTypeSpecs.classname);
+
 		return this;
 	}
 
@@ -396,25 +430,38 @@ export const ToastBox = (): HTMLDivElement => (<div id="ToastBox"></div>) as HTM
 /**
  * Creates and displays a new toast notification.
  *
- * @param {ToastType} [myToastType=ToastType.Info] - The type of toast to create.
- * @param {string} [myToastText=""] - The text to display in the toast.
+ * @param {ToastType} [toastType=ToastType.Info] - The type of toast to create.
+ * @param {string} [toastText=""] - The text to display in the toast.
  * @param {IToast_Props} [options={}] - An object containing options for customizing the appearance and behavior of the toast.
  * @returns {Toast} - The new Toast instance that was created.
  */
 // eslint-disable-next-line max-params
 export function ShowToast(
-	myToastType: ToastType = ToastType.Info,
-	myToastText: string = "",
-	options: IToast_Props = {},
+	toastType: ToastType = ToastType.Info,
+	toastText?: string,
+	options?: IToast_Props,
 	toastBoxParent: HTMLElement = document.body,
 ): Toast {
-	const myToast = new Toast(myToastType, myToastText, options);
+	const toast = new Toast(toastType, toastText, options);
 
-	let myToastBox = document.getElementById("ToastBox");
-	if (myToastBox === null) {
-		myToastBox = <ToastBox />;
-		toastBoxParent.prepend(myToastBox);
+	let toastBox = document.getElementById("ToastBox");
+	if (toastBox === null) {
+		toastBox = <ToastBox />;
+		toastBoxParent.prepend(toastBox);
 	}
-	myToastBox.appendChild(myToast.toastElement);
-	return myToast;
+
+	toastBox.appendChild(toast.toastElement);
+	return toast;
+}
+
+export function ShowSuccessToast(toastText?: string, options?: IToast_Props, toastBoxParent?: HTMLElement): Toast {
+	return ShowToast(ToastType.Successful, toastText, options, toastBoxParent);
+}
+
+export function ShowErrorToast(toastText?: string, options?: IToast_Props, toastBoxParent?: HTMLElement): Toast {
+	return ShowToast(ToastType.Error, toastText, options, toastBoxParent);
+}
+
+export function ShowInfoToast(toastText?: string, options?: IToast_Props, toastBoxParent?: HTMLElement): Toast {
+	return ShowToast(ToastType.Info, toastText, options, toastBoxParent);
 }
