@@ -130,6 +130,16 @@ export interface IToast_Props {
 	 * An array of buttons to display in the toast.
 	 */
 	buttons?: IToastButton_Props[];
+
+	/**
+	 * Indicates whether the component should display a loader.
+	 */
+	hasLoader?: boolean;
+
+	/**
+	 * Specifies whether only a loader should be displayed.
+	 */
+	onlyLoader?: boolean;
 }
 
 /**
@@ -137,6 +147,7 @@ export interface IToast_Props {
  */
 const toast_DefaultProps: IToast_Props = {
 	duration: 5000,
+	hasLoader: false,
 };
 
 /**
@@ -205,11 +216,11 @@ export class Toast {
 		if (toastType == ToastType.Successful) toastTypeSpecs = ToastTypeData.Successful;
 		else if (toastType == ToastType.Error) toastTypeSpecs = ToastTypeData.Error;
 
-		if (!toastText) toastText = toastTypeSpecs.text;
+		if (toastText == null) toastText = toastTypeSpecs.text;
 
 		this.#isPinned = options.isPinned || options.duration === -1;
 
-		const hasActionBox = !(options.noPin && options.noDismiss);
+		const hasActionBox = !((options.noPin || options.isPinned) && options.noDismiss);
 		const isUserPinable = !(options.noPin || this.#isPinned);
 		const isUserDismissable = !options.noDismiss;
 
@@ -256,31 +267,51 @@ export class Toast {
 			);
 		}
 
+		const hasContent = (options.title || toastText || options.buttons) && !options.onlyLoader;
+		const isLoaderOnly = options.onlyLoader || (options.hasLoader && !hasContent);
+
+		let loaderElement: HTMLElement;
+
+		if (options.hasLoader) {
+			loaderElement = (
+				<div class="Toast-LoaderBox">
+					<div class="Toast-Loader"></div>
+				</div>
+			);
+		}
+
+		const toastBodyClass = isLoaderOnly ? "Toast-Body Toast-LoaderOnly" : "Toast-Body";
+
 		this.toastElement.append(
-			<div class="Toast-Content">
-				{options.title && (
-					<h5
-						class="Toast-Title"
-						style={{
-							...(options.titleAlign ? { textAlign: options.titleAlign } : {}),
-							...(options.titleSize ? { fontSize: options.titleSize } : {}),
-							...(options.titleWeight ? { fontWeight: options.titleWeight } : {}),
-						}}
-					>
-						{options.title}
-					</h5>
-				)}
-				{this.#toastTextElement}
-				{options.buttons && (
-					<div class="Toast-ButtonBox">
-						{options.buttons?.map((i) => (
-							<button class={"Toast-Button " + i.style} onClick={i.onClick}>
-								{i.text}
-							</button>
-						))}
+			<div class={toastBodyClass}>
+				{loaderElement}
+				{hasContent && (
+					<div class="Toast-Content">
+						{options.title && (
+							<h5
+								class="Toast-Title"
+								style={{
+									...(options.titleAlign ? { textAlign: options.titleAlign } : {}),
+									...(options.titleSize ? { fontSize: options.titleSize } : {}),
+									...(options.titleWeight ? { fontWeight: options.titleWeight } : {}),
+								}}
+							>
+								{options.title}
+							</h5>
+						)}
+
+						{this.#toastTextElement}
+						{options.buttons && (
+							<div class="Toast-ButtonBox">
+								{options.buttons?.map((i) => (
+									<button class={"Toast-Button " + i.style} onClick={i.onClick}>
+										{i.text}
+									</button>
+								))}
+							</div>
+						)}
 					</div>
 				)}
-
 				<div class="Toast-ProgressBar">{this.#toastProgressBarValueElement}</div>
 			</div>,
 		);
@@ -302,6 +333,10 @@ export class Toast {
 
 	BuildInfoToast(toastText: string = "", options: IToast_Props = {}): Toast {
 		return this.BuildToast(ToastType.Info, toastText, options);
+	}
+
+	BuildLoaderToast(toastText: string = "", options: IToast_Props = {}): Toast {
+		return this.BuildToast(ToastType.Info, toastText, { hasLoader: true, isPinned: true, noDismiss: true, ...options });
 	}
 
 	/**
@@ -464,4 +499,13 @@ export function ShowErrorToast(toastText?: string, options?: IToast_Props, toast
 
 export function ShowInfoToast(toastText?: string, options?: IToast_Props, toastBoxParent?: HTMLElement): Toast {
 	return ShowToast(ToastType.Info, toastText, options, toastBoxParent);
+}
+
+export function ShowLoaderToast(toastText?: string, options?: IToast_Props, toastBoxParent?: HTMLElement): Toast {
+	return ShowToast(
+		ToastType.Info,
+		toastText,
+		{ hasLoader: true, isPinned: true, noDismiss: true, ...options },
+		toastBoxParent,
+	);
 }
