@@ -9,6 +9,8 @@ $Toast-Color-Text-OnAccent: #f9f7f7;
 $Toast-Color-Text-Secondary: #898989;
 $Toast-Hover-Slight-Lighten: inset 0 0 999px 999px rgba(255, 255, 255, 0.2);
 
+$ProgressBar-Height: 3px;
+
 $Responsive-Tablet-Max: 770px;
 $Responsive-Mobile-Max: 700px;
 $Responsive-MobileSmall-Max: 500px;
@@ -276,7 +278,7 @@ $Responsive-MobileSmall-Max: 500px;
 	inset-block-end: 0;
 	inset-inline-start: 0;
 	width: 100%;
-	height: 3px;
+	height: $ProgressBar-Height;
 	background-color: transparent;
 }
 
@@ -284,7 +286,7 @@ $Responsive-MobileSmall-Max: 500px;
 	position: absolute;
 	left: 0;
 	width: 0;
-	height: 3px;
+	height: $ProgressBar-Height;
 	background-color: #fff;
 }
 
