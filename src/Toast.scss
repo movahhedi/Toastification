@@ -113,6 +113,8 @@ $Responsive-MobileSmall-Max: 500px;
 
 .Toast-Body {
 	display: grid;
+	width: 100%;
+	background: inherit;
 	padding: 16px 24px;
 	grid-template: "loader content" 1fr / auto 1fr;
 	border-radius: 16px;
