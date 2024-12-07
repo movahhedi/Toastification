@@ -1,6 +1,6 @@
 {
 	"name": "toastification",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Toast Notifications for TypeScript & Lestin",
 	"author": "Shahab Movahhedi <dev@shmovahhedi.com>",
 	"license": "MIT",
