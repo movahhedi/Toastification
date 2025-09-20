@@ -258,7 +258,7 @@ $Responsive-MobileSmall-Max: 500px;
 	transition: 300ms;
 	line-height: 0;
 	z-index: -1;
-	margin-inline-end: (-$Border-Width / 1);
+	margin-inline-end: calc(-1 * $Border-Width / 1);
 	border: $Border-Width solid transparent;
 	scale: 1 0.8;
 
@@ -309,8 +309,9 @@ $Responsive-MobileSmall-Max: 500px;
 
 .Toast-ProgressBar-Value {
 	position: absolute;
-	left: 0;
 	width: 0;
+	left: 0;
+	bottom: 0;
 	height: $ProgressBar-Height;
 	background-color: #fff;
 }
