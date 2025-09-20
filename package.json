@@ -22,7 +22,7 @@
 		"lestin",
 		"movahhedi"
 	],
-	"packageManager": "yarn@4.5.3",
+	"packageManager": "yarn@4.10.2",
 	"type": "module",
 	"source": "./src/Toast.tsx",
 	"main": "./dist/Toast.cjs",
